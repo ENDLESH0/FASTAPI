@@ -1,10 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
 app.title = "Mi aplicacion Sencilla"
-app.version = 0.0
+app.version = '0.0.1'
 
 movies = [
     {
@@ -43,3 +43,36 @@ def get_movie_by_category(category: str):
     for movie in movies:
         if movie['category'] == category:
             return movie
+        
+
+@app.post("/movies", tags=['movies'])
+def create_movie(id: int = Body(),
+                 title: str = Body,
+                 overwiew: str = Body,
+                 year:str = Body,
+                 rating: float = Body,
+                 category: str = Body):
+    movies.append({
+        'id':id,
+        'title':title,
+        'overwiew':overwiew,
+        'rating':rating,
+        'category':category
+    })
+    return movies
+
+@app.put("/movies/{id}", tags=['movies'])
+def update_movie(id: int,
+                 title: str = Body(),
+                 overwiew: str = Body(),
+                 year:str = Body(),
+                 rating: float = Body(),
+                 category: str = Body()):
+    for movie in movies:
+        if movie['id'] == id:
+            movie['title'] == title
+            movie['overwiew'] == overwiew
+            movie['year'] == year
+            movie['rating'] == rating
+            movie['category'] == category
+            return movies
